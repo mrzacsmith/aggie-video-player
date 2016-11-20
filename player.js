@@ -3,6 +3,8 @@ window.addEventListener('load', function() {
 
 		// video container
 		video = document.getElementById('video');
+		pauseScreen = document.getElementById('screen');
+		screenButton = document.getElementById('screen-button');
 
 		// progress bar container
 		pbarContainer = document.getElementById('pbar-container');
@@ -14,6 +16,7 @@ window.addEventListener('load', function() {
 		soundButton = document.getElementById('sound-button');
 		sbarContainer = document.getElementById('sbar-container');
 		sbar = document.getElementById('sbar');
+		fullScreenButton = document.getElementById('fullscreen-button');
 
 
 		video.load();
@@ -23,6 +26,8 @@ window.addEventListener('load', function() {
 					updatePlayer();
 					soundButton.addEventListener('click', muteOrUnmute, false);
 					sbarContainer.addEventListener('click', changeVolume, false);
+					fullScreenButton.addEventListener('click', fullscreen, false);
+					screenButton.addEventListener('click', playOrPause, false);
 		}, false);
 
 }, false);
@@ -32,10 +37,12 @@ function playOrPause() {
 		video.play();
 		playButton.src = 'images/pause.png';
 		update = setInterval(updatePlayer, 30);
+		pauseScreen.style.display = 'none';
 	} else {
 		video.pause();
 		playButton.src = 'images/play.png';
 		window.clearInterval(update);
+		pauseScreen.style.display = 'block';
 	}
 }
 
@@ -46,6 +53,9 @@ function updatePlayer() {
 	if (video.ended) {
 		window.clearInterval(update);
 		playButton.src = 'images/replay.png';
+
+		pauseScreen.style.display = 'block';
+		screenButton.src = 'images/replay.png';
 	}
 }
 
@@ -94,4 +104,16 @@ function changeVolume(ev) {
 	video.muted = false;
 	soundButton.src = 'images/sound.png';
 	sbar.style.display = 'block';
+}
+
+function fullscreen() {
+	if (video.requestFullscreen) {
+		video.requestFullscreen();
+	} else if (video.webkitRequestFullscreen) {
+		video.webkitRequestFullscreen();
+	} else if (video.mozRequestFullscreen) {
+		video.mozRequestFullscreen();
+	} else if (video.msRequestFullscreen) {
+		video.msRequestFullscreen();
+	}
 }
